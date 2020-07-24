@@ -1,0 +1,4 @@
+.object-fit {
+  height: 20rem;
+  object-fit: contain;
+}
