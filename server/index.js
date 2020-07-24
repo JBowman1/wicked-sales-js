@@ -36,7 +36,7 @@ app.get('/api/products', (req, res, next) => {
 app.get('/api/products/:productId', (req, res, next) => {
   const productId = parseInt(req.params.productId, 10);
   if (!productId) {
-    return next(new ClientError('This product cannot be found.', 404));
+    return next(new ClientError('This product cannot be found.', 400));
   }
   const sql = `
     select *
