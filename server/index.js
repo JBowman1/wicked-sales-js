@@ -33,10 +33,10 @@ app.get('/api/products', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/products/:productId', (req, res, next) => {
+pp.get('/api/products/:productId', (req, res, next) => {
   const productId = parseInt(req.params.productId, 10);
   if (!productId) {
-    return next(new ClientError('This product cannot be found.', 400));
+    return next(new ClientError('Please enter a product ID.', 400));
   }
   const sql = `
     select *
@@ -45,7 +45,13 @@ app.get('/api/products/:productId', (req, res, next) => {
   `;
   const params = [productId];
   db.query(sql, params)
-    .then(result => res.json(result.rows[0]))
+    .then(result => {
+      if (result.rows[0] === undefined) {
+        next(new ClientError('This ID does not match a product.', 404));
+      } else {
+        res.json(result.rows[0]);
+      }
+    })
     .catch(err => next(err));
 });
 
